@@ -40,7 +40,7 @@ export function OutfitBuilderPage() {
     scene.background = new THREE.Color("#f5f5f5");
 
     const camera = new THREE.PerspectiveCamera(45, mountRef.current.clientWidth / 420, 0.1, 100);
-    camera.position.set(0, 1.5, zoom);
+    (camera as any).position.set(0, 1.5, zoom);
 
     const renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(mountRef.current.clientWidth, 420);
@@ -48,7 +48,7 @@ export function OutfitBuilderPage() {
     mountRef.current.appendChild(renderer.domElement);
 
     const light = new THREE.DirectionalLight("#ffffff", 1.1);
-    light.position.set(3, 4, 5);
+    (light as any).position.set(3, 4, 5);
     scene.add(light);
 
     const ambient = new THREE.AmbientLight("#ffffff", 0.6);
@@ -60,24 +60,24 @@ export function OutfitBuilderPage() {
       new THREE.CylinderGeometry(0.45, 0.55, 1.4, 32),
       new THREE.MeshStandardMaterial({ color: "#242424" }),
     );
-    body.position.y = 1.1;
+    (body as any).position.y = 1.1;
 
     const head = new THREE.Mesh(
       new THREE.SphereGeometry(0.28, 32, 32),
       new THREE.MeshStandardMaterial({ color: "#d7b899" }),
     );
-    head.position.y = 2.05;
+    (head as any).position.y = 2.05;
 
-    group.add(body, head);
-    scene.add(group);
+    (group as any).add(body, head);
+    scene.add(group as any);
 
     const floor = new THREE.Mesh(
       new THREE.CircleGeometry(1.6, 32),
       new THREE.MeshStandardMaterial({ color: "#d7d7d7" }),
     );
-    floor.rotation.x = -Math.PI / 2;
-    floor.position.y = 0;
-    scene.add(floor);
+    (floor as any).rotation.x = -Math.PI / 2;
+    (floor as any).position.y = 0;
+    scene.add(floor as any);
 
     sceneRef.current = scene;
     cameraRef.current = camera;
@@ -111,21 +111,21 @@ export function OutfitBuilderPage() {
     if (!avatarRef.current) {
       return;
     }
-    avatarRef.current.scale.y = Math.max(0.8, Math.min(1.2, height / 175));
+    (avatarRef.current as any).scale.y = Math.max(0.8, Math.min(1.2, height / 175));
   }, [height]);
 
   useEffect(() => {
     if (!avatarRef.current) {
       return;
     }
-    avatarRef.current.rotation.y = rotationY;
+    (avatarRef.current as any).rotation.y = rotationY;
   }, [rotationY]);
 
   useEffect(() => {
     if (!cameraRef.current) {
       return;
     }
-    cameraRef.current.position.z = zoom;
+    (cameraRef.current as any).position.z = zoom;
   }, [zoom]);
 
   const totalPrice = Object.values(selected).reduce((sum, item) => sum + item.pricing.final, 0);
