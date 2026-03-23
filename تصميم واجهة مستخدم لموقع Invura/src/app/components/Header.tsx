@@ -1,10 +1,14 @@
 import { Link } from "react-router";
 import { ShoppingCart, User, Heart, Menu, Search } from "lucide-react";
 import { useState } from "react";
+import { useStore } from "../contexts/StoreContext";
+import { useAuth } from "../contexts/AuthContext";
 
 export function Header() {
-  const [cartCount] = useState(3);
+  const { cart, wishlist } = useStore();
+  const { user, isAuthenticated, logout } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const cartCount = cart?.items.length || 0;
 
   return (
     <header className="bg-black text-white sticky top-0 z-50 shadow-lg">
@@ -26,9 +30,14 @@ export function Header() {
             <Link to="/outfit-builder" className="hover:text-red-500 transition-colors">
               منشئ الأزياء
             </Link>
-            <Link to="/user" className="hover:text-red-500 transition-colors">
+            <Link to={isAuthenticated ? "/user" : "/auth"} className="hover:text-red-500 transition-colors">
               حسابي
             </Link>
+            {user?.role === "admin" && (
+              <Link to="/admin" className="hover:text-red-500 transition-colors">
+                الإدارة
+              </Link>
+            )}
           </nav>
 
           {/* Actions */}
@@ -39,17 +48,30 @@ export function Header() {
             <Link to="/user" className="hover:text-red-500 transition-colors">
               <Heart className="w-5 h-5" />
             </Link>
-            <Link to="/user" className="hover:text-red-500 transition-colors">
+            <Link to="/cart" className="relative hover:text-red-500 transition-colors">
+              <Heart className="w-5 h-5" />
+              {wishlist.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                  {wishlist.length}
+                </span>
+              )}
+            </Link>
+            <Link to={isAuthenticated ? "/user" : "/auth"} className="hover:text-red-500 transition-colors">
               <User className="w-5 h-5" />
             </Link>
-            <button className="relative hover:text-red-500 transition-colors">
+            <Link to="/cart" className="relative hover:text-red-500 transition-colors">
               <ShoppingCart className="w-5 h-5" />
               {cartCount > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {cartCount}
                 </span>
               )}
-            </button>
+            </Link>
+            {isAuthenticated && (
+              <button onClick={logout} className="hidden md:block text-sm bg-white/10 px-3 py-1 rounded hover:bg-red-600">
+                خروج
+              </button>
+            )}
             <button
               className="md:hidden hover:text-red-500 transition-colors"
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -78,6 +100,13 @@ export function Header() {
                 المنتجات
               </Link>
               <Link
+                to="/cart"
+                className="hover:text-red-500 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                السلة
+              </Link>
+              <Link
                 to="/outfit-builder"
                 className="hover:text-red-500 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
@@ -85,12 +114,21 @@ export function Header() {
                 منشئ الأزياء
               </Link>
               <Link
-                to="/user"
+                to={isAuthenticated ? "/user" : "/auth"}
                 className="hover:text-red-500 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
                 حسابي
               </Link>
+              {user?.role === "admin" && (
+                <Link
+                  to="/admin"
+                  className="hover:text-red-500 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  الإدارة
+                </Link>
+              )}
             </div>
           </nav>
         )}

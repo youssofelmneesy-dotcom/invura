@@ -1,17 +1,16 @@
 import { motion } from "motion/react";
 import { Heart, ShoppingCart } from "lucide-react";
-import { useState } from "react";
+import { useStore } from "../contexts/StoreContext";
+import type { Product } from "../lib/types";
 
 interface ProductCardProps {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
+  product: Product;
   onClick: () => void;
 }
 
-export function ProductCard({ id, name, price, image, onClick }: ProductCardProps) {
-  const [isFavorite, setIsFavorite] = useState(false);
+export function ProductCard({ product, onClick }: ProductCardProps) {
+  const { addToCart, addToWishlist, removeFromWishlist, isWishlisted } = useStore();
+  const isFavorite = isWishlisted(product.id);
 
   return (
     <motion.div
@@ -21,14 +20,19 @@ export function ProductCard({ id, name, price, image, onClick }: ProductCardProp
     >
       <div className="relative aspect-square overflow-hidden">
         <img
-          src={image}
-          alt={name}
+          src={product.images[0]}
+          alt={product.name}
+          loading="lazy"
           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
         />
         <button
-          onClick={(e) => {
+          onClick={async (e) => {
             e.stopPropagation();
-            setIsFavorite(!isFavorite);
+            if (isFavorite) {
+              removeFromWishlist(product.id);
+            } else {
+              addToWishlist(product);
+            }
           }}
           className="absolute top-4 left-4 bg-white p-2 rounded-full shadow-lg hover:bg-red-50 transition-colors"
         >
@@ -41,12 +45,18 @@ export function ProductCard({ id, name, price, image, onClick }: ProductCardProp
         </div>
       </div>
       <div className="p-4">
-        <h3 className="text-lg font-bold text-gray-900 mb-2">{name}</h3>
+        <h3 className="text-lg font-bold text-gray-900 mb-2">{product.name}</h3>
         <div className="flex items-center justify-between">
-          <span className="text-2xl font-extrabold text-black">{price} ر.س</span>
+          <div>
+            {product.pricing.discountPercent > 0 && (
+              <span className="text-sm line-through text-gray-400 ml-2">{product.pricing.base} ر.س</span>
+            )}
+            <span className="text-2xl font-extrabold text-black">{product.pricing.final} ر.س</span>
+          </div>
           <button
-            onClick={(e) => {
+            onClick={async (e) => {
               e.stopPropagation();
+              await addToCart({ productId: product.id, qty: 1 });
             }}
             className="bg-black text-white p-2 rounded-lg hover:bg-red-600 transition-colors"
           >

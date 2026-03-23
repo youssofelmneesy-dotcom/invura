@@ -1,29 +1,78 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MessageCircle, X, Send } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import { api } from "../lib/api";
+
+type ChatMessage = { id: number; text: string; sender: "bot" | "user" };
 
 export function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     { id: 1, text: "مرحباً بك في Invura! كيف يمكنني مساعدتك اليوم؟", sender: "bot" },
   ]);
   const [inputValue, setInputValue] = useState("");
+  const socketRef = useRef<WebSocket | null>(null);
 
-  const handleSend = () => {
+  useEffect(() => {
+    if (!isOpen || socketRef.current) {
+      return;
+    }
+
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+    const socket = new WebSocket(`${protocol}://${window.location.host}/ws/chat`);
+    socketRef.current = socket;
+
+    socket.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        if (data?.text) {
+          setMessages((prev) => [
+            ...prev,
+            { id: Date.now(), text: data.text, sender: "bot" },
+          ]);
+        }
+      } catch {
+        // Ignore malformed websocket payloads.
+      }
+    };
+
+    socket.onclose = () => {
+      socketRef.current = null;
+    };
+
+    return () => {
+      socket.close();
+      socketRef.current = null;
+    };
+  }, [isOpen]);
+
+  const handleSend = async () => {
     if (inputValue.trim()) {
       const userMessage = { id: Date.now(), text: inputValue, sender: "user" };
-      setMessages([...messages, userMessage]);
+      setMessages((prev) => [...prev, userMessage]);
       setInputValue("");
 
-      // محاكاة رد تلقائي من البوت
-      setTimeout(() => {
-        const botMessage = {
-          id: Date.now() + 1,
-          text: "شكراً لتواصلك! سيقوم أحد ممثلينا بالرد عليك قريباً.",
-          sender: "bot",
-        };
-        setMessages((prev) => [...prev, botMessage]);
-      }, 1000);
+      if (socketRef.current && socketRef.current.readyState === WebSocket.OPEN) {
+        socketRef.current.send(JSON.stringify({ text: userMessage.text }));
+        return;
+      }
+
+      try {
+        const response = await api.chatReply(userMessage.text);
+        setMessages((prev) => [
+          ...prev,
+          { id: Date.now() + 1, text: response.message, sender: "bot" },
+        ]);
+      } catch {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: Date.now() + 1,
+            text: "حدث خطأ مؤقت في خدمة المحادثة. حاول مرة أخرى.",
+            sender: "bot",
+          },
+        ]);
+      }
     }
   };
 
