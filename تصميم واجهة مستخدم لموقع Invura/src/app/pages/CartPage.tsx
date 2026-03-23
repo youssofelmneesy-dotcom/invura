@@ -31,10 +31,10 @@ export function CartPage() {
                 <div className="flex-1">
                   <h3 className="font-bold text-lg">{item.product.name}</h3>
                   <p className="text-gray-600 text-sm">المقاس: {item.size || "-"} | اللون: {item.color || "-"}</p>
-                  <p className="font-bold mt-1">{item.product.pricing.final} ر.س × {item.qty}</p>
+                  <p className="font-bold mt-1">{item.product.pricing.final} ج.م × {item.qty}</p>
                 </div>
                 <div className="text-left">
-                  <p className="font-extrabold">{item.lineTotal} ر.س</p>
+                  <p className="font-extrabold">{item.lineTotal} ج.م</p>
                   <button onClick={() => removeCartItem(item.id)} className="text-red-600 mt-2 text-sm">
                     حذف
                   </button>
@@ -47,7 +47,7 @@ export function CartPage() {
             <h2 className="text-2xl font-extrabold">ملخص الطلب</h2>
             <div className="flex justify-between">
               <span>الإجمالي</span>
-              <span className="font-extrabold">{cart?.subtotal || 0} ر.س</span>
+              <span className="font-extrabold">{cart?.subtotal || 0} ج.م</span>
             </div>
             <button
               onClick={() => {

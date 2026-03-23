@@ -208,9 +208,9 @@ export function ProductPage() {
 
               <div>
                 {currentProduct.pricing.discountPercent > 0 && (
-                  <p className="text-gray-500 line-through">{currentProduct.pricing.base} ر.س</p>
+                  <p className="text-gray-500 line-through">{currentProduct.pricing.base} ج.م</p>
                 )}
-                <p className="text-4xl font-extrabold">{currentProduct.pricing.final} ر.س</p>
+                <p className="text-4xl font-extrabold">{currentProduct.pricing.final} ج.م</p>
               </div>
 
               <p className="text-gray-700">{currentProduct.description}</p>
@@ -277,7 +277,7 @@ export function ProductPage() {
                   <img src={product.images[0]} alt={product.name} className="w-16 h-16 rounded object-cover" loading="lazy" />
                   <div>
                     <p className="font-bold">{product.name}</p>
-                    <p className="text-sm text-gray-500">{product.pricing.final} ر.س</p>
+                    <p className="text-sm text-gray-500">{product.pricing.final} ج.م</p>
                   </div>
                 </button>
               ))}

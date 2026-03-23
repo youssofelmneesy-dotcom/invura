@@ -1,26 +1,26 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { Crown, Gift, Heart, Package, Sparkles, User } from "lucide-react";
+import { useSearchParams } from "react-router";
+import { Heart, Package, User } from "lucide-react";
 import { useAuth } from "../contexts/AuthContext";
 import { useStore } from "../contexts/StoreContext";
 import { api } from "../lib/api";
-import type { Offer, Order } from "../lib/types";
+import type { Order } from "../lib/types";
 
 export function UserPage() {
-  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { user } = useAuth();
   const { wishlist, addToCart } = useStore();
-  const [activeTab, setActiveTab] = useState<"orders" | "wishlist" | "profile" | "vip">("orders");
+  const initialTab = searchParams.get("tab") === "wishlist" ? "wishlist" : "orders";
+  const [activeTab, setActiveTab] = useState<"orders" | "wishlist" | "profile">(initialTab);
   const [orders, setOrders] = useState<Order[]>([]);
-  const [offers, setOffers] = useState<Offer[]>([]);
-  const [vip, setVip] = useState(false);
 
   useEffect(() => {
     api.myOrders().then((response) => setOrders(response.items));
-    api.vipOffers().then((response) => {
-      setOffers(response.items);
-      setVip(response.vip);
-    });
+    // VIP offers fetching disabled per request while preserving endpoint in API layer.
+    // api.vipOffers().then((response) => {
+    //   setOffers(response.items);
+    //   setVip(response.vip);
+    // });
   }, []);
 
   return (
@@ -32,19 +32,21 @@ export function UserPage() {
         <div className="flex-1">
           <h1 className="text-3xl font-extrabold mb-2">{user?.name}</h1>
           <p>{user?.email}</p>
+          {/* VIP badge disabled per request. */}
           <div className="mt-2">
-            <span className={`px-3 py-1 rounded-full text-sm font-bold ${vip ? "bg-yellow-400 text-black" : "bg-white/20"}`}>
-              {vip ? "عضو VIP" : "عضوية عادية"}
-            </span>
+            <span className="px-3 py-1 rounded-full text-sm font-bold bg-white/20">الحساب الشخصي</span>
           </div>
         </div>
+        {/* Outfit Builder disabled per request. */}
+        {/*
         <button onClick={() => navigate("/outfit-builder")} className="bg-red-600 px-4 py-3 rounded-lg font-bold flex items-center gap-2">
           <Sparkles className="w-4 h-4" /> منشئ الأزياء
         </button>
+        */}
       </div>
 
       <div className="bg-white rounded-xl shadow">
-        <div className="grid grid-cols-2 md:grid-cols-4 border-b">
+        <div className="grid grid-cols-3 border-b">
           <button className={`py-4 font-bold ${activeTab === "orders" ? "bg-black text-white" : ""}`} onClick={() => setActiveTab("orders")}>
             <Package className="w-4 h-4 inline ml-2" /> الطلبات
           </button>
@@ -54,9 +56,12 @@ export function UserPage() {
           <button className={`py-4 font-bold ${activeTab === "profile" ? "bg-black text-white" : ""}`} onClick={() => setActiveTab("profile")}>
             <User className="w-4 h-4 inline ml-2" /> الملف
           </button>
+          {/* VIP tab disabled per request. */}
+          {/*
           <button className={`py-4 font-bold ${activeTab === "vip" ? "bg-black text-white" : ""}`} onClick={() => setActiveTab("vip")}>
             <Crown className="w-4 h-4 inline ml-2" /> VIP
           </button>
+          */}
         </div>
 
         <div className="p-6">
@@ -69,7 +74,7 @@ export function UserPage() {
                     <p className="text-sm text-gray-600">{new Date(order.createdAt).toLocaleString("ar-SA")}</p>
                   </div>
                   <div className="text-left">
-                    <p className="font-bold">{order.total} ر.س</p>
+                    <p className="font-bold">{order.total} ج.م</p>
                     <p className="text-sm">{order.orderStatus}</p>
                   </div>
                 </div>
@@ -84,7 +89,7 @@ export function UserPage() {
                 <div key={item.id} className="border rounded-lg p-3">
                   <img src={item.images[0]} alt={item.name} className="w-full h-40 object-cover rounded" loading="lazy" />
                   <h3 className="font-bold mt-3">{item.name}</h3>
-                  <p className="text-sm text-gray-600 mb-2">{item.pricing.final} ر.س</p>
+                  <p className="text-sm text-gray-600 mb-2">{item.pricing.final} ج.م</p>
                   <button onClick={() => addToCart({ productId: item.id, qty: 1 })} className="w-full bg-black text-white py-2 rounded">
                     أضف إلى السلة
                   </button>
@@ -102,6 +107,8 @@ export function UserPage() {
             </div>
           )}
 
+          {/* VIP section disabled per request. */}
+          {/*
           {activeTab === "vip" && (
             <div className="space-y-4">
               <p className="font-bold">حالة العضوية: {vip ? "VIP" : "عادية"}</p>
@@ -118,6 +125,7 @@ export function UserPage() {
               </div>
             </div>
           )}
+          */}
         </div>
       </div>
     </div>

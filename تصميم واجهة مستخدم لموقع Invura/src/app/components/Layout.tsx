@@ -1,7 +1,7 @@
 import { Outlet } from "react-router";
 import { Header } from "./Header";
 import { Footer } from "./Footer";
-import { ChatBot } from "./ChatBot";
+// import { ChatBot } from "./ChatBot";
 
 export function Layout() {
   return (
@@ -11,7 +11,8 @@ export function Layout() {
         <Outlet />
       </main>
       <Footer />
-      <ChatBot />
+      {/* Chat Bot disabled per request. Keep component import/render commented for easy restore. */}
+      {/* <ChatBot /> */}
     </div>
   );
 }

@@ -35,15 +35,18 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link to="/product/1" className="text-gray-400 hover:text-red-500 transition-colors">
+                <Link to="/products" className="text-gray-400 hover:text-red-500 transition-colors">
                   المنتجات
                 </Link>
               </li>
+              {/* Outfit Builder disabled per request */}
+              {/*
               <li>
                 <Link to="/outfit-builder" className="text-gray-400 hover:text-red-500 transition-colors">
                   منشئ الأزياء
                 </Link>
               </li>
+              */}
               <li>
                 <Link to="/user" className="text-gray-400 hover:text-red-500 transition-colors">
                   حسابي
@@ -89,7 +92,7 @@ export function Footer() {
           </p>
           <p className="text-gray-500 mt-2">
             تم تصميم الموقع بواسطة{" "}
-            <span className="text-red-500 font-bold">Sizout Company</span>
+            <span className="text-red-500 font-bold">Sysout Company</span>
           </p>
         </div>
       </div>

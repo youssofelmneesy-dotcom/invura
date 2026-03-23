@@ -186,14 +186,14 @@ export function OutfitBuilderPage() {
               <img src={product.images[0]} alt={product.name} className="w-16 h-16 rounded object-cover" loading="lazy" />
               <div>
                 <p className="font-bold">{product.name}</p>
-                <p className="text-sm text-gray-600">{product.pricing.final} ر.س</p>
+                <p className="text-sm text-gray-600">{product.pricing.final} ج.م</p>
               </div>
             </button>
           ))}
         </div>
 
         <div className="mt-6 border-t pt-4 space-y-3">
-          <p className="text-xl font-extrabold">الإجمالي: {totalPrice} ر.س</p>
+          <p className="text-xl font-extrabold">الإجمالي: {totalPrice} ج.م</p>
           <button
             disabled={!Object.values(selected).length}
             onClick={async () => {

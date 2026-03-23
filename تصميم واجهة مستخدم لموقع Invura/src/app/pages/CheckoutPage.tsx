@@ -73,7 +73,7 @@ export function CheckoutPage() {
 
         <div className="flex justify-between font-bold text-xl">
           <span>الإجمالي</span>
-          <span>{cart?.subtotal || 0} ر.س</span>
+          <span>{cart?.subtotal || 0} ج.م</span>
         </div>
 
         {message && <div className="bg-gray-100 rounded-lg p-3 text-sm">{message}</div>}

@@ -58,8 +58,12 @@ function adminOnly(req, res, next) {
 function productPriceForUser(product, user) {
   const base = Number(product.price);
   const offer = Number(product.offerPercent || 0);
-  const vipExtra = user?.vip ? 20 : 0;
-  const vipAllowed = product.isVipOnly ? !!user?.vip : true;
+  // VIP discount disabled per request.
+  // const vipExtra = user?.vip ? 20 : 0;
+  const vipExtra = 0;
+  // VIP-only product restriction disabled per request to ensure all products appear.
+  // const vipAllowed = product.isVipOnly ? !!user?.vip : true;
+  const vipAllowed = true;
   if (!vipAllowed) {
     return null;
   }
@@ -237,9 +241,10 @@ app.get("/api/products", (req, res) => {
   if (bestSeller === "1") {
     products = products.filter((p) => p.bestSeller);
   }
-  if (vipOnly === "1") {
-    products = products.filter((p) => p.isVipOnly);
-  }
+  // VIP filtering disabled per request.
+  // if (vipOnly === "1") {
+  //   products = products.filter((p) => p.isVipOnly);
+  // }
   if (offersOnly === "1") {
     products = products.filter((p) => Number(p.offerPercent) > 0);
   }
@@ -256,7 +261,7 @@ app.get("/api/products/:id", (req, res) => {
   }
   const computed = attachComputedProduct(product, user);
   if (!computed) {
-    return res.status(403).json({ error: "المنتج متاح فقط لأعضاء VIP" });
+    return res.status(404).json({ error: "المنتج غير متاح" });
   }
   return res.json({ item: computed });
 });
@@ -374,7 +379,7 @@ app.post("/api/checkout", auth, async (req, res) => {
       } else {
         const intent = await stripe.paymentIntents.create({
           amount: order.total * 100,
-          currency: "sar",
+          currency: "egp",
           automatic_payment_methods: { enabled: true },
           metadata: { orderId: order.id },
         });
@@ -421,11 +426,13 @@ app.get("/api/orders/my", auth, (req, res) => {
 
 app.get("/api/vip/offers", auth, (req, res) => {
   const db = readDb();
-  const user = getCurrentUserEntity(req.user, db);
-  const offers = db.offers.filter((o) => o.active);
+  // VIP program disabled per request while keeping endpoint shape stable.
+  // const user = getCurrentUserEntity(req.user, db);
+  // const offers = db.offers.filter((o) => o.active);
+  void db;
   return res.json({
-    vip: !!user.vip,
-    items: offers,
+    vip: false,
+    items: [],
   });
 });
 
@@ -459,9 +466,10 @@ app.patch("/api/admin/orders/:id", auth, adminOnly, (req, res) => {
 });
 
 app.get("/api/admin/vip-customers", auth, adminOnly, (_req, res) => {
-  const db = readDb();
-  const items = db.users.filter((u) => u.vip).map(sanitizeUser);
-  return res.json({ items });
+  // VIP customers report disabled per request while preserving endpoint.
+  // const db = readDb();
+  // const items = db.users.filter((u) => u.vip).map(sanitizeUser);
+  return res.json({ items: [] });
 });
 
 app.post("/api/admin/products", auth, adminOnly, (req, res) => {
@@ -526,7 +534,8 @@ app.post("/api/chat/reply", (req, res) => {
   let reply = "شكراً لتواصلك مع Invura. كيف أقدر أساعدك أكثر؟";
 
   if (text.includes("vip")) {
-    reply = "عروض VIP متاحة من صفحة حسابي، ويمكنك الترقية مباشرة.";
+    // VIP flow disabled per request.
+    reply = "ميزة VIP غير مفعلة حالياً.";
   } else if (text.includes("طلب") || text.includes("order")) {
     reply = "لمتابعة طلبك، ادخل إلى صفحة حسابي ثم تبويب الطلبات.";
   } else if (text.includes("شحن")) {

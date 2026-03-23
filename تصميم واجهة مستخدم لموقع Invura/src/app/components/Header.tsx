@@ -24,12 +24,15 @@ export function Header() {
             <Link to="/" className="hover:text-red-500 transition-colors">
               الرئيسية
             </Link>
-            <Link to="/product/1" className="hover:text-red-500 transition-colors">
+            <Link to="/products" className="hover:text-red-500 transition-colors">
               المنتجات
             </Link>
+            {/* Outfit Builder disabled per request: keep code path commented for quick re-enable */}
+            {/*
             <Link to="/outfit-builder" className="hover:text-red-500 transition-colors">
               منشئ الأزياء
             </Link>
+            */}
             <Link to={isAuthenticated ? "/user" : "/auth"} className="hover:text-red-500 transition-colors">
               حسابي
             </Link>
@@ -45,10 +48,8 @@ export function Header() {
             <button className="hover:text-red-500 transition-colors hidden md:block">
               <Search className="w-5 h-5" />
             </button>
-            <Link to="/user" className="hover:text-red-500 transition-colors">
-              <Heart className="w-5 h-5" />
-            </Link>
-            <Link to="/cart" className="relative hover:text-red-500 transition-colors">
+            {/* Keep a single favorites icon and route directly to account favorites tab */}
+            <Link to="/user?tab=wishlist" className="relative hover:text-red-500 transition-colors">
               <Heart className="w-5 h-5" />
               {wishlist.length > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
@@ -93,7 +94,7 @@ export function Header() {
                 الرئيسية
               </Link>
               <Link
-                to="/product/1"
+                to="/products"
                 className="hover:text-red-500 transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
@@ -106,6 +107,8 @@ export function Header() {
               >
                 السلة
               </Link>
+              {/* Outfit Builder disabled per request */}
+              {/*
               <Link
                 to="/outfit-builder"
                 className="hover:text-red-500 transition-colors"
@@ -113,6 +116,7 @@ export function Header() {
               >
                 منشئ الأزياء
               </Link>
+              */}
               <Link
                 to={isAuthenticated ? "/user" : "/auth"}
                 className="hover:text-red-500 transition-colors"
