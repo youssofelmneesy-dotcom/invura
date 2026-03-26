@@ -8,4 +8,18 @@
   Run `npm i` to install the dependencies.
 
   Run `npm run dev` to start the development server.
+
+  ## Deploy on GitHub Pages
+
+  1. Push this project to a GitHub repository.
+  2. Go to repository settings > Pages.
+  3. In Build and deployment, choose Source: GitHub Actions.
+  4. Push to `main` branch (or run the workflow manually from Actions tab).
+  5. After deployment completes, open the Pages URL shown in the workflow.
+
+  Notes:
+  - The workflow file is already included at `.github/workflows/deploy-pages.yml`.
+  - Frontend routes are supported with a `404.html` SPA fallback.
+  - This project now supports `Frontend-only` mode on GitHub Pages using local mock data and LocalStorage.
+  - You can force frontend-only mode locally by setting `VITE_FRONTEND_ONLY=true`.
   

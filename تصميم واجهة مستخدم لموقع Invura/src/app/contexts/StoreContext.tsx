@@ -59,7 +59,7 @@ export function StoreProvider({ children }: { children: ReactNode }) {
   const addToCart = useCallback(
     async ({ productId, qty = 1, size, color }: { productId: number; qty?: number; size?: string; color?: string }) => {
       if (!isAuthenticated) {
-        window.location.assign("/auth");
+        window.location.assign(`${import.meta.env.BASE_URL}auth`);
         return;
       }
       const next = await api.addCartItem({ productId, qty, size, color });
