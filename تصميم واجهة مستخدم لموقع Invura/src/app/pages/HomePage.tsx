@@ -69,7 +69,7 @@ export function HomePage() {
     <div>
       <section className="relative min-h-[70vh] overflow-hidden">
         <img
-          src=" file:///Users/yousefelfaidy/Desktop/PHOTO-2026-04-06-23-56-22.jpg "
+          src=" invura/PHOTO-2026-04-06-23-56-22.jpg "
           alt="Invura Hero"
           className="absolute inset-0 w-full h-full object-cover"
           loading="eager"
@@ -83,7 +83,7 @@ export function HomePage() {
           . Limited drops... Unlimited style  
           </motion.p>
           <button onClick={() => navigate("/products")} className="bg-red-600 hover:bg-red-700 px-8 py-4 rounded-lg text-lg font-bold">
-          Go shopping ? 
+          Go shopping
           </button>
         </div>
       </section>
