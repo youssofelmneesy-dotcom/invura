@@ -77,19 +77,19 @@ export function HomePage() {
         <div className="absolute inset-0 bg-black/55" />
         <div className="relative container mx-auto px-4 py-24 text-center text-white">
           <motion.h1 initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} className="text-5xl md:text-7xl font-extrabold mb-4">
-            Invura متجر رياضي عربي
+            INVURA 
           </motion.h1>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl md:text-2xl mb-8">
-            تسوق منتجات أصلية بأفضل جودة وتجربة عربية متكاملة.
+          Limited drops... Unlimited style . 
           </motion.p>
           <button onClick={() => navigate("/products")} className="bg-red-600 hover:bg-red-700 px-8 py-4 rounded-lg text-lg font-bold">
-            ابدأ التسوق
+          Go shopping ? 
           </button>
         </div>
       </section>
 
       <section className="container mx-auto px-4 py-16">
-        <h2 className="text-4xl font-extrabold text-center mb-10">الفئات</h2>
+        <h2 className="text-4xl font-extrabold text-center mb-10"> categories </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((category, index) => (
             <CategoryCard
@@ -102,7 +102,9 @@ export function HomePage() {
         </div>
       </section>
 
-      <section className="container mx-auto px-4 py-12">
+      
+
+      {/* <section className="container mx-auto px-4 py-12">
         <h2 className="text-4xl font-extrabold text-center mb-10">المنتجات المميزة</h2>
         <Slider {...sliderSettings}>
           {featuredProducts.map((product) => (
@@ -111,11 +113,13 @@ export function HomePage() {
             </div>
           ))}
         </Slider>
-      </section>
+      </section> */}
+
+      
 
       <section className="bg-gray-100 py-16">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-extrabold text-center mb-10">الأكثر مبيعاً</h2>
+          <h2 className="text-4xl font-extrabold text-center mb-10"> Some products </h2>
           <Slider {...sliderSettings}>
             {bestSellers.map((product) => (
               <div key={product.id} className="px-3">
