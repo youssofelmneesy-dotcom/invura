@@ -69,7 +69,7 @@ export function HomePage() {
     <div>
       <section className="relative min-h-[70vh] overflow-hidden">
         <img
-          src="https://images.unsplash.com/photo-1762744827101-404f5cc7d8ab?auto=format&fit=crop&w=1400&q=80"
+          src=" file:///Users/yousefelfaidy/Desktop/PHOTO-2026-04-06-23-56-22.jpg "
           alt="Invura Hero"
           className="absolute inset-0 w-full h-full object-cover"
           loading="eager"
@@ -80,7 +80,7 @@ export function HomePage() {
             INVURA 
           </motion.h1>
           <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }} className="text-xl md:text-2xl mb-8">
-          Limited drops... Unlimited style . 
+          . Limited drops... Unlimited style  
           </motion.p>
           <button onClick={() => navigate("/products")} className="bg-red-600 hover:bg-red-700 px-8 py-4 rounded-lg text-lg font-bold">
           Go shopping ? 
@@ -89,7 +89,7 @@ export function HomePage() {
       </section>
 
       <section className="container mx-auto px-4 py-16">
-        <h2 className="text-4xl font-extrabold text-center mb-10"> categories </h2>
+        <h2 className="text-4xl font-extrabold text-center mb-10"> Categories </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((category, index) => (
             <CategoryCard
